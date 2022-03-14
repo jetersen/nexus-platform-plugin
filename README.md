@@ -26,6 +26,10 @@ Changelog
 =========
 3.13.401.v8feb_e4a_a_cf3c (March 14, 2022)
 ------------------------------------------------
+- Provide [latest features](https://help.sonatype.com/iqserver/product-information/release-notes#ReleaseNotes-Release134(March2022)) for Nexus Lifecycle 1.134.0-02.
+
+3.13.401.v8feb_e4a_a_cf3c (March 14, 2022)
+------------------------------------------------
 - Notes 1
 - Notes 2
 - Provide [latest features](https://help.sonatype.com/iqserver/product-information/release-notes#ReleaseNotes-Release134(March2022)) for Nexus Lifecycle 1.134.0-02.
