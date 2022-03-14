@@ -28,8 +28,8 @@ node('ubuntu-zion') {
 
       // Checkout and config
       checkout scm
-      runSafely "git config user.email 'zion@sonatype.com'"
-      runSafely "git config user.name 'Sonatype Zion'"
+      runSafely "git config user.email 'sonatype-ci@sonatype.com'"
+      runSafely "git config user.name 'Sonatype CI'"
 
       // Setup common variables
       version = params.pluginVersion
