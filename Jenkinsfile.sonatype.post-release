@@ -20,7 +20,8 @@ def jira = [
 ]
 
 node('ubuntu-zion') {
-  String version, releaseNotes, branch, addIQReleaseNotesLink
+  String version, releaseNotes, branch
+  boolean addIQReleaseNotesLink
 
   try {
     stage('Preparation') {
@@ -46,11 +47,6 @@ node('ubuntu-zion') {
       currentBuild.displayName = "#${currentBuild.number} - ${version}"
     }
     stage('Update and push code') {
-      echo "!Notes: ${releaseNotes}"
-      echo "Notes: ${!releaseNotes}"
-      echo "!Link: ${!addIQReleaseNotesLink}"
-      echo "Link: ${addIQReleaseNotesLink}"
-      echo "Result: ${!releaseNotes && !addIQReleaseNotesLink}"
       // Check if want to update the change log
       if (!releaseNotes && !addIQReleaseNotesLink) {
         echo 'Skipping change log update'
