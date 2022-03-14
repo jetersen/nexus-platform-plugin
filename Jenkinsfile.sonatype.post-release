@@ -50,6 +50,7 @@ node('ubuntu-zion') {
     }
 
     // Check if want to update the change log
+    echo "Result: ${!releaseNotes && !addIQReleaseNotesLink}"
     if (!releaseNotes && !addIQReleaseNotesLink) {
       echo 'Skipping change log update'
       return
