@@ -59,7 +59,7 @@ node('ubuntu-zion') {
       }
     }
     stage('Release Jira fix version') {
-      jiraSetFixVersion(jira, version)
+      //jiraSetFixVersion(jira, version)
     }
   }
   finally {
