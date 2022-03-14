@@ -35,6 +35,11 @@ node('ubuntu-zion') {
       releaseNotes = params.releaseNotes
       addIQReleaseNotesLink = params.addIQReleaseNotesLink
 
+      // Check mandatory parameters
+      if (!version) {
+        error 'The Plugin Version is a mandatory parameter!'
+      }
+
       // Update display name
       currentBuild.displayName = "#${currentBuild.number} - ${version}"
     }
