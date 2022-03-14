@@ -28,8 +28,8 @@ node('ubuntu-zion') {
 
       // Checkout and config
       checkout scm
-      runSafely "git config user.email 'sonatype-ci@sonatype.com'"
-      runSafely "git config user.name 'Sonatype CI'"
+      runSafely 'git config user.email sonatype-ci@sonatype.com'
+      runSafely 'git config user.name Sonatype CI'
 
       // Setup common variables
       version = params.pluginVersion
@@ -58,10 +58,18 @@ node('ubuntu-zion') {
       // Add and commit changes
       runSafely 'git add README.md'
       runSafely "git commit -m 'Updating change logs for release ${version}'"
-      runSafely "git pull --no-rebase --no-edit origin ${branch}"
 
       // Push changes
-      sshagent(credentials: [sonatypeZionCredentialsId()]) {
+      withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'integrations-github-api',
+                        usernameVariable: 'GITHUB_API_USERNAME', passwordVariable: 'GITHUB_API_PASSWORD']]) {
+        // Setup remote url with credentials
+        runSafely "git remote set-url origin https://${env.GITHUB_API_USERNAME}:${env.GITHUB_API_PASSWORD}@github" +
+            '.com/jenkinsci/nexus-platform-plugin.git'
+
+        // Get latest commits to not have issues on push
+        runSafely "git pull --no-rebase --no-edit origin ${branch}"
+
+        // Push code changes
         runSafely "git push origin HEAD:${branch}"
       }
     }
