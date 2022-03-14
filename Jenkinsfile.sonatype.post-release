@@ -35,6 +35,7 @@ node('ubuntu-zion') {
       version = params.pluginVersion
       releaseNotes = params.releaseNotes
       addIQReleaseNotesLink = params.addIQReleaseNotesLink
+      branch = 'test-post-release'
 
       // Check mandatory parameters
       if (!version) {
@@ -57,18 +58,10 @@ node('ubuntu-zion') {
       // Add and commit changes
       runSafely 'git add README.md'
       runSafely "git commit -m 'Updating change logs for release ${version}'"
+      runSafely "git pull --no-rebase --no-edit origin ${branch}"
 
       // Push changes
-      withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'integrations-github-api',
-                        usernameVariable: 'GITHUB_API_USERNAME', passwordVariable: 'GITHUB_API_PASSWORD']]) {
-        // Setup remote url with credentials
-        runSafely "git remote set-url origin https://${env.GITHUB_API_USERNAME}:${env.GITHUB_API_PASSWORD}@github" +
-            '.com/jenkinsci/nexus-platform-plugin.git'
-
-        // Get latest commits to not have issues on push
-        runSafely "git pull --no-rebase --no-edit origin ${branch}"
-
-        // Push code changes
+      sshagent(credentials: [sonatypeZionCredentialsId()]) {
         runSafely "git push origin HEAD:${branch}"
       }
     }
