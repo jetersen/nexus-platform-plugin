@@ -45,16 +45,17 @@ node('ubuntu-zion') {
       // Update display name
       currentBuild.displayName = "#${currentBuild.number} - ${version}"
     }
-    stage('Update and push code') {
-      // Check if want to update the change log
-      echo "Release Notes: ${releaseNotes}"
-      echo "Release Notes: ${!releaseNotes}"
-      echo "Release Notes: ${addIQReleaseNotesLink}"
-      if(!addIQReleaseNotesLink && (releaseNotes || true)) {
-        echo 'Skipping change log update'
-        return
-      }
+    stage('Release Jira fix version') {
+      //jiraSetFixVersion(jira, version)
+    }
 
+    // Check if want to update the change log
+    if (!releaseNotes && !addIQReleaseNotesLink) {
+      echo 'Skipping change log update'
+      return
+    }
+
+    stage('Update and push code') {
       // Update change logs
       updateChangeLogs(releaseNotes, version, addIQReleaseNotesLink)
 
@@ -75,9 +76,6 @@ node('ubuntu-zion') {
         // Push code changes
         runSafely "git push origin HEAD:${branch}"
       }
-    }
-    stage('Release Jira fix version') {
-      //jiraSetFixVersion(jira, version)
     }
   }
   finally {
