@@ -47,6 +47,8 @@ node('ubuntu-zion') {
     }
     stage('Update and push code') {
       // Check if want to update the change log
+      echo "Release Notes: ${releaseNotes}"
+      echo "Release Notes: ${addIQReleaseNotesLink}"
       if(!releaseNotes && !addIQReleaseNotesLink) {
         echo 'Skipping change log update'
         return
